@@ -1,17 +1,352 @@
-<section class="panel no-print">
-    <div class="section-title">✍️ Pengaturan Tanda Tangan</div>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raport Hafalan Juz Amma Geva</title>
+<style>
+:root{
+  --green:#176b4d;--green-dark:#0b3326;--silver:#b9c0c2;
+  --border:#c8ced0;--soft:#f1f3f3;--text:#26312d;--danger:#b42318;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f5;color:var(--text)}
+.app-header{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;padding:18px 16px;border-bottom:3px solid var(--silver)}
+.brand{max-width:1100px;margin:auto;display:flex;align-items:center;gap:14px}
+.brand-logo-img{width:58px;height:58px;object-fit:contain;background:#fff;border-radius:8px;padding:4px}
+.brand h1{margin:0;font-size:23px}.brand p{margin:5px 0 0;opacity:.9}
+.container{max-width:1100px;margin:20px auto;padding:0 14px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.section-title{color:var(--green);font-size:18px;font-weight:700;margin-bottom:14px}
+.grid-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+label{display:block;font-weight:700;margin-bottom:6px}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid #c7cdcf;border-radius:7px;font:inherit;background:#fff}
+textarea{min-height:85px;resize:vertical}
+.button-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+.button-row.center{justify-content:center}
+.btn{border:0;border-radius:7px;padding:10px 14px;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(.96)}
+.primary,.success{background:var(--green);color:#fff}.secondary{background:#687372;color:#fff}
+.outline{background:#fff;color:var(--green);border:1px solid var(--silver)}
+.danger{background:var(--danger);color:#fff}
+.file-btn{display:inline-flex;align-items:center;cursor:pointer}.file-btn input{display:none}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:580px}
+th,td{border:1px solid #d7dcdd;padding:9px;text-align:left}
+th{background:#edf1f0;color:#174e3a}
+td.center,th.center{text-align:center}
+.badge{display:inline-block;background:#e7efec;color:var(--green);border:1px solid #c8ddd5;border-radius:999px;padding:3px 8px;font-size:12px;vertical-align:middle}
+.student-current{background:var(--soft);border:1px solid var(--border);padding:10px;border-radius:7px;margin-bottom:12px}
+.report{margin-top:24px}
+.report-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.report-header{text-align:center}.report-logo img{width:76px;height:76px;object-fit:contain}
+.logo-fallback{display:none;margin:auto;width:76px;height:76px;align-items:center;justify-content:center;background:#e8eeec;border-radius:50%;font-weight:700;color:var(--green)}
+.report-header h2{margin:7px 0 3px;font-size:20px}.report-header h3{margin:3px 0;font-size:17px}.report-header p{margin:4px 0;font-size:13px}
+.report-header hr{border:0;border-top:2px solid var(--green);margin:12px 0}
+.identity-box{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #cfd5d5;margin:15px 0}
+.identity-box div{display:flex;gap:8px;padding:8px;border-bottom:1px solid #e0e3e3}.identity-box div:nth-last-child(-n+1){border-bottom:0}
+.identity-box strong{min-width:105px}.tabel-raport th{text-align:center}.tabel-raport td:first-child,.tabel-raport td:nth-child(3){text-align:center}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.summary div{display:flex;justify-content:space-between;padding:10px;background:#f2f5f4;border:1px solid #d4dada;border-radius:7px}
+.catatan{margin-top:15px}.catatan textarea{margin-top:6px}
+.signature-area{display:grid;grid-template-columns:1fr 1fr;gap:70px;width:100%;margin-top:35px}
+.signature-box{text-align:center;min-height:165px;font-size:14px}.signature-box p{margin:3px 0}
+.ttd-space{height:65px}.signature-box strong{text-decoration:underline}
+.motto{text-align:center;font-style:italic;color:#52605b;margin-top:24px}
+.empty{padding:20px;text-align:center;color:#69736f}
+.small-note{font-size:12px;color:#68736f;margin-top:7px}
+.action-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.action-buttons .btn{padding:7px 9px;font-size:12px}
+@media(max-width:700px){
+ .brand h1{font-size:18px}.brand-logo-img{width:48px;height:48px}
+ .grid-form{grid-template-columns:1fr}.identity-box{grid-template-columns:1fr}
+ .signature-area{grid-template-columns:1fr 1fr;gap:20px}
+ .signature-box{font-size:12px}.report-actions{align-items:flex-start;flex-direction:column}
+}
+@media print{
+ body{background:#fff}
+ .no-print,.app-header,body>.container>section:not(.report){display:none!important}
+ .container{max-width:none;margin:0;padding:0}
+ .report{display:block!important;border:0;box-shadow:none;margin:0;padding:0}
+ .report-actions{display:none!important}
+ .signature-area{display:grid!important;grid-template-columns:1fr 1fr!important;gap:70px!important;margin-top:30px}
+ .signature-box{min-height:165px}.ttd-space{height:65px}
+ .catatan textarea{border:0;padding:0;min-height:60px}
+}
+</style>
+</head>
+<body>
 
-    <div class="grid-form">
-        <div>
-            <label for="namaKepala">Nama Kepala Madrasah</label>
-            <input id="namaKepala" type="text"
-                   placeholder="Nama Kepala Madrasah">
-        </div>
-
-        <div>
-            <label for="nipKepala">NIP Kepala Madrasah</label>
-            <input id="nipKepala" type="text"
-                   placeholder="NIP Kepala Madrasah">
-        </div>
+<header class="app-header">
+  <div class="brand">
+    <img src="logo.png" class="brand-logo-img" alt="Logo MTs Miftahul Ulum">
+    <div>
+      <h1>Raport Hafalan Juz Amma Geva</h1>
+      <p>MTs Miftahul Ulum Pronojiwo</p>
     </div>
+  </div>
+</header>
+
+<main class="container">
+
+<section class="panel data-panel">
+  <div class="section-title">👤 Data Siswa</div>
+  <div class="grid-form">
+    <div><label for="namaSiswa">Nama Siswa</label><input id="namaSiswa" type="text" placeholder="Masukkan nama siswa"></div>
+    <div><label for="kelasSiswa">Kelas</label><select id="kelasSiswa"><option value="">Pilih kelas</option><option>A</option><option>B</option><option>C</option></select></div>
+    <div><label for="semesterSiswa">Semester</label><select id="semesterSiswa"><option value="">Pilih semester</option><option>Ganjil</option><option>Genap</option></select></div>
+    <div><label for="namaGuruSiswa">Guru</label><input id="namaGuruSiswa" type="text" placeholder="Nama guru"></div>
+  </div>
+  <div class="button-row">
+    <button class="btn primary" id="btnTambah">＋ Tambah Siswa</button>
+    <button class="btn secondary" id="btnBackup">💾 Backup Data</button>
+    <label class="btn secondary file-btn">📂 Import Data<input id="fileImport" type="file" accept=".json"></label>
+  </div>
 </section>
+
+<section class="panel no-print">
+  <div class="section-title">✍️ Pengaturan Tanda Tangan</div>
+  <div class="grid-form">
+    <div><label for="namaKepala">Nama Kepala Madrasah</label><input id="namaKepala" type="text" placeholder="Nama Kepala Madrasah"></div>
+    <div><label for="nipKepala">NIP Kepala Madrasah</label><input id="nipKepala" type="text" placeholder="NIP Kepala Madrasah"></div>
+  </div>
+  <div class="small-note">Nama dan NIP tersimpan otomatis di perangkat ini.</div>
+</section>
+
+<section class="panel">
+  <div class="section-title">📋 Daftar Siswa</div>
+  <div class="table-wrap">
+    <table id="siswaTable">
+      <thead><tr><th>No</th><th>Nama Siswa</th><th>Kelas</th><th>Semester</th><th>Aksi</th></tr></thead>
+      <tbody id="daftarSiswa"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel" id="inputPanel">
+  <div class="section-title">📚 Daftar Hafalan Juz Amma <span class="badge">37 Surah</span></div>
+  <div class="student-current"><strong>Siswa aktif:</strong> <span id="siswaAktif">Belum dipilih</span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>No</th><th>Nama Surah</th><th>Nilai</th></tr></thead>
+      <tbody id="daftarSurah"></tbody>
+    </table>
+  </div>
+  <div class="button-row center">
+    <button class="btn success" id="btnSimpan">💾 Simpan Nilai</button>
+    <button class="btn primary" id="btnHitung">📊 Hitung Raport</button>
+  </div>
+</section>
+
+<section class="panel report" id="hasil">
+  <div class="report-actions no-print">
+    <div class="section-title">📄 Hasil Raport</div>
+    <button class="btn outline" id="btnCetak">🖨️ Cetak / Simpan PDF</button>
+  </div>
+
+  <div class="report-header">
+    <div class="report-logo">
+      <img src="logo.png" alt="Logo Madrasah" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex';">
+      <div id="logoFallback" class="logo-fallback">MTs<br>MU</div>
+    </div>
+    <h2>MTs MIFTAHUL ULUM PRONOJIWO</h2>
+    <h3>RAPORT HAFALAN JUZ AMMA GEVA</h3>
+    <p>Tahun Pelajaran 2026/2027</p>
+    <p>Pronojiwo, Kabupaten Lumajang, Jawa Timur</p>
+    <hr>
+  </div>
+
+  <div class="identity-box">
+    <div><strong>Nama Siswa</strong><span id="hasilNama">-</span></div>
+    <div><strong>Kelas</strong><span id="hasilKelas">-</span></div>
+    <div><strong>Semester</strong><span id="hasilSemester">-</span></div>
+    <div><strong>Guru</strong><span id="hasilGuru">-</span></div>
+    <div><strong>Jenis Raport</strong><span>Hafalan Juz Amma</span></div>
+  </div>
+
+  <div class="report-table-wrap">
+    <table class="tabel-raport">
+      <thead><tr><th>No</th><th>Nama Surah</th><th>Nilai</th><th>Keterangan</th></tr></thead>
+      <tbody id="tabelHasil"></tbody>
+    </table>
+  </div>
+
+  <div class="summary">
+    <div><strong>Rata-rata</strong><span id="hasilRata">-</span></div>
+    <div><strong>Predikat</strong><span id="hasilPredikat">-</span></div>
+  </div>
+
+  <div class="catatan">
+    <label for="catatanGuru">Catatan Guru</label>
+    <textarea id="catatanGuru" placeholder="Tuliskan catatan perkembangan hafalan siswa..."></textarea>
+  </div>
+
+  <div class="signature-area">
+    <div class="signature-box">
+      <p>Mengetahui,</p>
+      <p><strong>Kepala Madrasah</strong></p>
+      <div class="ttd-space"></div>
+      <strong id="hasilKepala">.................................</strong><br>
+      <span>NIP. <span id="hasilNipKepala">........................</span></span>
+    </div>
+    <div class="signature-box">
+      <p>Pronojiwo, <span id="hasilTanggal">................</span></p>
+      <p><strong>Guru Pengampu</strong></p>
+      <div class="ttd-space"></div>
+      <strong id="hasilGuruTtd">.................................</strong><br>
+      <span>NIP. ........................</span>
+    </div>
+  </div>
+
+  <p class="motto">Semoga dengan hafalan Juz Amma ini, menjadi langkah awal menuju generasi Qur'ani.</p>
+</section>
+</main>
+
+<script>
+const SURAH = [
+"An-Naba'","An-Nazi'at","'Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Insyiqaq",
+"Al-Buruj","At-Tariq","Al-A'la","Al-Gasyiyah","Al-Fajr","Al-Balad","Asy-Syams",
+"Al-Lail","Ad-Duha","Asy-Syarh","At-Tin","Al-'Alaq","Al-Qadr","Al-Bayyinah",
+"Az-Zalzalah","Al-'Adiyat","Al-Qari'ah","At-Takatsur","Al-'Asr","Al-Humazah",
+"Al-Fil","Quraisy","Al-Ma'un","Al-Kausar","Al-Kafirun","An-Nasr","Al-Lahab",
+"Al-Ikhlas","Al-Falaq","An-Nas"
+];
+
+let students = JSON.parse(localStorage.getItem("geva_students") || "[]");
+let activeId = localStorage.getItem("geva_active_id") || "";
+let kepala = JSON.parse(localStorage.getItem("geva_ttd") || '{"nama":"","nip":""}');
+
+const $ = id => document.getElementById(id);
+const namaKepala=$("namaKepala"), nipKepala=$("nipKepala");
+
+namaKepala.value=kepala.nama||"";
+nipKepala.value=kepala.nip||"";
+
+function saveAll(){
+  localStorage.setItem("geva_students",JSON.stringify(students));
+  if(activeId) localStorage.setItem("geva_active_id",activeId);
+  localStorage.setItem("geva_ttd",JSON.stringify({nama:namaKepala.value.trim(),nip:nipKepala.value.trim()}));
+}
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function renderStudents(){
+  const body=$("daftarSiswa");
+  if(!students.length){body.innerHTML='<tr><td colspan="5" class="empty">Belum ada data siswa.</td></tr>';return;}
+  body.innerHTML=students.map((s,i)=>`<tr>
+    <td class="center">${i+1}</td><td>${esc(s.nama)}</td><td>${esc(s.kelas)}</td><td>${esc(s.semester)}</td>
+    <td><div class="action-buttons">
+      <button class="btn primary" onclick="pilihSiswa('${s.id}')">Pilih</button>
+      <button class="btn danger" onclick="hapusSiswa('${s.id}')">Hapus</button>
+    </div></td></tr>`).join("");
+}
+function renderSurah(){
+  $("daftarSurah").innerHTML=SURAH.map((name,i)=>`<tr>
+    <td class="center">${i+1}</td><td>${name}</td>
+    <td><input class="nilai" data-index="${i}" type="number" min="0" max="100" placeholder="0"></td>
+  </tr>`).join("");
+}
+function getActive(){return students.find(s=>s.id===activeId);}
+function clearInputs(){
+  $("namaSiswa").value="";$("kelasSiswa").value="";$("semesterSiswa").value="";$("namaGuruSiswa").value="";
+}
+function pilihSiswa(id){
+  activeId=id; const s=getActive(); if(!s)return;
+  $("namaSiswa").value=s.nama;$("kelasSiswa").value=s.kelas;$("semesterSiswa").value=s.semester;$("namaGuruSiswa").value=s.guru;
+  $("siswaAktif").textContent=s.nama+" — Kelas "+s.kelas;
+  document.querySelectorAll(".nilai").forEach((el,i)=>el.value=(s.nilai&&s.nilai[i]!==undefined)?s.nilai[i]:"");
+  $("catatanGuru").value=s.catatan||"";
+  saveAll(); hitungRaport();
+}
+function tambahSiswa(){
+  const nama=$("namaSiswa").value.trim(), kelas=$("kelasSiswa").value, semester=$("semesterSiswa").value, guru=$("namaGuruSiswa").value.trim();
+  if(!nama||!kelas||!semester){alert("Lengkapi Nama Siswa, Kelas, dan Semester terlebih dahulu.");return;}
+  const id=Date.now().toString(36)+Math.random().toString(36).slice(2);
+  students.push({id,nama,kelas,semester,guru,nilai:{},catatan:""});
+  activeId=id; saveAll(); renderStudents(); pilihSiswa(id); alert("Data siswa berhasil ditambahkan.");
+}
+function simpanNilai(silent=false){
+  const s=getActive(); if(!s){alert("Pilih siswa terlebih dahulu.");return;}
+  s.nama=$("namaSiswa").value.trim()||s.nama;s.kelas=$("kelasSiswa").value||s.kelas;s.semester=$("semesterSiswa").value||s.semester;s.guru=$("namaGuruSiswa").value.trim();
+  s.nilai={}; document.querySelectorAll(".nilai").forEach(el=>{if(el.value!=="")s.nilai[el.dataset.index]=Number(el.value)});
+  s.catatan=$("catatanGuru").value;
+  saveAll(); renderStudents(); $("siswaAktif").textContent=s.nama+" — Kelas "+s.kelas;
+  if(!silent)alert("Nilai berhasil disimpan.");
+}
+function hapusSiswa(id){
+  if(!confirm("Hapus data siswa ini?"))return;
+  students=students.filter(s=>s.id!==id);
+  if(activeId===id){activeId="";clearInputs();$("siswaAktif").textContent="Belum dipilih";document.querySelectorAll(".nilai").forEach(e=>e.value="");}
+  saveAll();renderStudents();$("tabelHasil").innerHTML="";
+}
+function keterangan(n){
+  if(n>=90)return "Sangat Baik"; if(n>=80)return "Baik"; if(n>=70)return "Cukup"; return "Perlu Bimbingan";
+}
+function predikat(n){
+  if(n>=90)return "A"; if(n>=80)return "B"; if(n>=70)return "C"; return "D";
+}
+function hitungRaport(){
+  const s=getActive(); if(!s){return;}
+  simpanNilai(true);
+  const values=SURAH.map((_,i)=>s.nilai?.[i]).filter(v=>Number.isFinite(v));
+  $("hasilNama").textContent=s.nama||"-";$("hasilKelas").textContent=s.kelas||"-";$("hasilSemester").textContent=s.semester||"-";$("hasilGuru").textContent=s.guru||"-";
+  $("catatanGuru").value=s.catatan||"";
+  $("tabelHasil").innerHTML=SURAH.map((name,i)=>{
+    const v=s.nilai?.[i]; const has=v!==undefined&&v!=="";
+    return `<tr><td>${i+1}</td><td>${name}</td><td>${has?esc(v):"-"}</td><td>${has?keterangan(Number(v)):"-"}</td></tr>`;
+  }).join("");
+  if(values.length){
+    const avg=values.reduce((a,b)=>a+Number(b),0)/values.length;
+    $("hasilRata").textContent=avg.toFixed(2);$("hasilPredikat").textContent=predikat(avg);
+  }else{$("hasilRata").textContent="-";$("hasilPredikat").textContent="-";}
+  updateTtd(); updateDate();
+}
+function updateTtd(){
+  $("hasilKepala").textContent=namaKepala.value.trim()||".................................";
+  $("hasilNipKepala").textContent=nipKepala.value.trim()||"........................";
+  const s=getActive();$("hasilGuruTtd").textContent=(s?.guru||$("namaGuruSiswa").value.trim())||".................................";
+}
+function updateDate(){
+  const d=new Date();
+  const bulan=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  $("hasilTanggal").textContent=d.getDate()+" "+bulan[d.getMonth()]+" "+d.getFullYear();
+}
+$("btnTambah").onclick=tambahSiswa;
+$("btnSimpan").onclick=()=>simpanNilai(false);
+$("btnHitung").onclick=()=>{simpanNilai(true);hitungRaport();$("hasil").scrollIntoView({behavior:"smooth"});};
+$("btnCetak").onclick=()=>{simpanNilai(true);hitungRaport();window.print();};
+$("catatanGuru").addEventListener("input",()=>{const s=getActive();if(s){s.catatan=$("catatanGuru").value;saveAll();}});
+$("namaKepala").addEventListener("input",()=>{saveAll();updateTtd();});
+$("nipKepala").addEventListener("input",()=>{saveAll();updateTtd();});
+$("namaGuruSiswa").addEventListener("input",updateTtd);
+
+$("btnBackup").onclick=()=>{
+  saveAll();
+  const data={students,activeId,ttd:{nama:namaKepala.value.trim(),nip:nipKepala.value.trim()},versi:"Raport Hafalan Juz Amma Geva"};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="backup-raport-juz-amma-geva.json";a.click();URL.revokeObjectURL(a.href);
+};
+$("fileImport").addEventListener("change",e=>{
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const data=JSON.parse(r.result);
+      if(!Array.isArray(data.students))throw new Error();
+      students=data.students;activeId=data.activeId||"";
+      namaKepala.value=data.ttd?.nama||"";nipKepala.value=data.ttd?.nip||"";
+      saveAll();renderStudents();renderSurah();
+      if(activeId&&getActive())pilihSiswa(activeId);else{clearInputs();updateTtd();}
+      alert("Data berhasil diimpor.");
+    }catch(err){alert("File backup tidak valid.");}
+    e.target.value="";
+  };r.readAsText(file);
+});
+
+window.pilihSiswa=pilihSiswa;window.hapusSiswa=hapusSiswa;
+renderSurah();renderStudents();
+if(activeId&&getActive())pilihSiswa(activeId);else updateDate();
+updateTtd();
+</script>
+</body>
+</html>
