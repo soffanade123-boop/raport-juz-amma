@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raport Hafalan Juz Amma</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="app-header">
+    <div class="brand">
+        <img src="logo.png"class="brand-logo-img" alt="Logo MTs Miftahul Ulum">
+        <div>
+            <h1>Raport Hafalan Juz Amma Geva</h1>
+            <p>MTs Miftahul Ulum Pronojiwo</p>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="panel data-panel">
+        <div class="section-title">👤 Data Siswa</div>
+
+        <div class="grid-form">
+            <div>
+                <label for="namaSiswa">Nama Siswa</label>
+                <input id="namaSiswa" type="text" placeholder="Masukkan nama siswa">
+            </div>
+
+            <div>
+                <label for="kelasSiswa">Kelas</label>
+                <select id="kelasSiswa">
+                    <option value="">Pilih kelas</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="semesterSiswa">Semester</label>
+                <select id="semesterSiswa">
+                    <option value="">Pilih semester</option>
+                    <option>Ganjil</option>
+                    <option>Genap</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="namaGuruSiswa">Guru</label>
+                <input id="namaGuruSiswa" type="text" placeholder="Nama guru">
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button class="btn primary" id="btnTambah">＋ Tambah Siswa</button>
+            <button class="btn secondary" id="btnBackup">💾 Backup Data</button>
+            <label class="btn secondary file-btn">
+                📂 Import Data
+                <input id="fileImport" type="file" accept=".json">
+            </label>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-title">📋 Daftar Siswa</div>
+        <div class="table-wrap">
+            <table id="siswaTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Siswa</th>
+                        <th>Kelas</th>
+                        <th>Semester</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="daftarSiswa"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel" id="inputPanel">
+        <div class="section-title">📚 Daftar Hafalan Juz Amma <span class="badge">37 Surah</span></div>
+
+        <div class="student-current">
+            <strong>Siswa aktif:</strong>
+            <span id="siswaAktif">Belum dipilih</span>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Surah</th>
+                        <th>Nilai</th>
+                    </tr>
+                </thead>
+                <tbody id="daftarSurah"></tbody>
+            </table>
+        </div>
+
+        <div class="button-row center">
+            <button class="btn success" id="btnSimpan">💾 Simpan Nilai</button>
+            <button class="btn primary" id="btnHitung">📊 Hitung Raport</button>
+        </div>
+    </section>
+
+    <section class="panel report" id="hasil">
+        <div class="report-actions no-print">
+            <div class="section-title">📄 Hasil Raport</div>
+            <button class="btn outline" id="btnCetak">🖨️ Cetak / Simpan PDF</button>
+        </div>
+
+        <div class="report-header">
+            <div class="report-logo">
+                <img src="logo.png" alt="Logo Madrasah" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                <div id="logoFallback" class="logo-fallback">MTs<br>MU</div>
+            </div>
+            <h2>MTs MIFTAHUL ULUM PRONOJIWO</h2>
+            <h3>RAPORT HAFALAN JUZ AMMA GEVA</h3>
+            <p>Tahun Pelajaran 2026/2027</p>
+            <p>Pronojiwo, Kabupaten Lumajang, Jawa Timur</p>
+            <hr>
+        </div>
+
+        <div class="identity-box">
+            <div><strong>Nama Siswa</strong><span id="hasilNama">-</span></div>
+            <div><strong>Kelas</strong><span id="hasilKelas">-</span></div>
+            <div><strong>Semester</strong><span id="hasilSemester">-</span></div>
+            <div><strong>Guru</strong><span id="hasilGuru">-</span></div>
+            <div><strong>Jenis Raport</strong><span>Hafalan Juz Amma</span></div>
+        </div>
+
+        <div class="report-table-wrap">
+            <table class="tabel-raport">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Surah</th>
+                        <th>Nilai</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelHasil"></tbody>
+            </table>
+        </div>
+
+        <div class="summary">
+            <div><strong>Rata-rata</strong><span id="hasilRata">-</span></div>
+            <div><strong>Predikat</strong><span id="hasilPredikat">-</span></div>
+        </div>
+
+        <div class="catatan">
+            <label for="catatanGuru">Catatan Guru</label>
+            <textarea id="catatanGuru" placeholder="Tuliskan catatan perkembangan hafalan siswa..."></textarea>
+        </div>
+
+        <div class="signature">
+            <p>Pronojiwo, <span id="hasilTanggal">................</span></p>
+            <p>Guru Pengampu,</p>
+            <br><br>
+            <strong id="hasilGuruTtd">................</strong>
+        </div>
+
+        <p class="motto">Semoga dengan hafalan Juz Amma ini, menjadi langkah awal menuju generasi Qur'ani.</p>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
