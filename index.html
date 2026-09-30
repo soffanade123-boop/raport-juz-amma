@@ -124,7 +124,7 @@ td.center,th.center{text-align:center}
 </section>
 
 <section class="panel" id="inputPanel">
-  <div class="section-title">📚 Daftar Hafalan Juz Amma <span class="badge">37 Surah</span></div>
+  <div class="section-title">📚 Daftar Hafalan Juz Amma <span class="badge" id="targetBadge">Pilih Kelas</span></div>
   <div class="student-current"><strong>Siswa aktif:</strong> <span id="siswaAktif">Belum dipilih</span></div>
   <div class="table-wrap">
     <table>
@@ -240,9 +240,30 @@ function renderStudents(){
       <button class="btn danger" onclick="hapusSiswa('${s.id}')">Hapus</button>
     </div></td></tr>`).join("");
 }
+const TARGET_SURAH = { A: 37, B: 6, C: 16 };
+
+function getTargetIndexes(kelas){
+  const count = TARGET_SURAH[kelas] || 37;
+  return Array.from({length: count}, (_, i) => i);
+}
+
+function updateTargetBadge(){
+  const kelas = $("kelasSiswa").value || getActive()?.kelas || "";
+  const text = {
+    A: "A • An-Nas → An-Naba'",
+    B: "B • An-Nas → Al-Mutaffifin",
+    C: "C • An-Nas → Ad-Duha"
+  };
+  $("targetBadge").textContent = text[kelas] || "Pilih Kelas";
+}
+
 function renderSurah(){
-  $("daftarSurah").innerHTML=SURAH.map((name,i)=>`<tr>
-    <td class="center">${i+1}</td><td>${name}</td>
+  const kelas = $("kelasSiswa").value || getActive()?.kelas || "A";
+  const indexes = getTargetIndexes(kelas);
+
+  $("daftarSurah").innerHTML = indexes.map(i => `<tr>
+    <td class="center">${i+1}</td>
+    <td>${SURAH[i]}</td>
     <td><input class="nilai" data-index="${i}" type="number" min="0" max="100" placeholder="0"></td>
   </tr>`).join("");
 }
@@ -254,7 +275,10 @@ function pilihSiswa(id){
   activeId=id; const s=getActive(); if(!s)return;
   $("namaSiswa").value=s.nama;$("kelasSiswa").value=s.kelas;$("semesterSiswa").value=s.semester;$("namaGuruSiswa").value=s.guru;
   $("siswaAktif").textContent=s.nama+" — Kelas "+s.kelas;
-  document.querySelectorAll(".nilai").forEach((el,i)=>el.value=(s.nilai&&s.nilai[i]!==undefined)?s.nilai[i]:"");
+  $("kelasSiswa").value=s.kelas;
+  renderSurah();
+  updateTargetBadge();
+  document.querySelectorAll(".nilai").forEach(el=>el.value=(s.nilai&&s.nilai[el.dataset.index]!==undefined)?s.nilai[el.dataset.index]:"");
   $("catatanGuru").value=s.catatan||"";
   saveAll(); hitungRaport();
 }
@@ -288,29 +312,44 @@ function predikat(n){
 function hitungRaport(){
   const s=getActive(); if(!s){return;}
   simpanNilai(true);
-  const values=SURAH.map((_,i)=>s.nilai?.[i]).filter(v=>Number.isFinite(v));
-  $("hasilNama").textContent=s.nama||"-";$("hasilKelas").textContent=s.kelas||"-";$("hasilSemester").textContent=s.semester||"-";$("hasilGuru").textContent=s.guru||"-";
+
+  const indexes=getTargetIndexes(s.kelas);
+  const values=indexes.map(i=>s.nilai?.[i]).filter(v=>Number.isFinite(v));
+
+  $("hasilNama").textContent=s.nama||"-";
+  $("hasilKelas").textContent=s.kelas||"-";
+  $("hasilSemester").textContent=s.semester||"-";
+  $("hasilGuru").textContent=s.guru||"-";
   $("catatanGuru").value=s.catatan||"";
-  $("tabelHasil").innerHTML=SURAH.map((name,i)=>{
-    const v=s.nilai?.[i]; const has=v!==undefined&&v!=="";
-    return `<tr><td>${i+1}</td><td>${name}</td><td>${has?esc(v):"-"}</td><td>${has?keterangan(Number(v)):"-"}</td></tr>`;
+
+  $("tabelHasil").innerHTML=indexes.map((i,nomor)=>{
+    const v=s.nilai?.[i];
+    const has=v!==undefined&&v!=="";
+    return `<tr><td>${nomor+1}</td><td>${SURAH[i]}</td><td>${has?esc(v):"-"}</td><td>${has?keterangan(Number(v)):"-"}</td></tr>`;
   }).join("");
+
   if(values.length){
     const avg=values.reduce((a,b)=>a+Number(b),0)/values.length;
-    $("hasilRata").textContent=avg.toFixed(2);$("hasilPredikat").textContent=predikat(avg);
-  }else{$("hasilRata").textContent="-";$("hasilPredikat").textContent="-";}
-  updateTtd(); updateDate();
+    $("hasilRata").textContent=avg.toFixed(2);
+    $("hasilPredikat").textContent=predikat(avg);
+  }else{
+    $("hasilRata").textContent="-";
+    $("hasilPredikat").textContent="-";
+  }
+
+  updateTtd();
+  updateDate();
 }
-function updateTtd(){
-  $("hasilKepala").textContent=namaKepala.value.trim()||".................................";
-  $("hasilNipKepala").textContent=nipKepala.value.trim()||"........................";
-  const s=getActive();$("hasilGuruTtd").textContent=(s?.guru||$("namaGuruSiswa").value.trim())||".................................";
-}
-function updateDate(){
-  const d=new Date();
-  const bulan=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-  $("hasilTanggal").textContent=d.getDate()+" "+bulan[d.getMonth()]+" "+d.getFullYear();
-}
+$("kelasSiswa").addEventListener("change", ()=>{
+  updateTargetBadge();
+  renderSurah();
+  const s=getActive();
+  if(s && s.kelas === $("kelasSiswa").value){
+    document.querySelectorAll(".nilai").forEach(el=>el.value=(s.nilai&&s.nilai[el.dataset.index]!==undefined)?s.nilai[el.dataset.index]:"");
+  } else {
+    document.querySelectorAll(".nilai").forEach(el=>el.value="");
+  }
+});
 $("btnTambah").onclick=tambahSiswa;
 $("btnSimpan").onclick=()=>simpanNilai(false);
 $("btnHitung").onclick=()=>{simpanNilai(true);hitungRaport();$("hasil").scrollIntoView({behavior:"smooth"});};
@@ -344,7 +383,7 @@ $("fileImport").addEventListener("change",e=>{
 });
 
 window.pilihSiswa=pilihSiswa;window.hapusSiswa=hapusSiswa;
-renderSurah();renderStudents();
+updateTargetBadge();renderSurah();renderStudents();
 if(activeId&&getActive())pilihSiswa(activeId);else updateDate();
 updateTtd();
 </script>
